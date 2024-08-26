@@ -192,6 +192,26 @@ param avdAlaWorkspaceDataRetention int = 90
 
 @sys.description('Existing Azure log analytics workspace resource ID to connect to. (Default: "")')
 param alaExistingWorkspaceResourceId string = ''
+//alerting params
+
+@description('bool to decide if alerts should be deplyed')
+param deployAlerts bool 
+
+@description('Location of needed scripts to deploy solution.')
+param _ArtifactsLocation string = 'https://raw.githubusercontent.com/Azure/azure-monitor-baseline-alerts/main/patterns/avd/scripts/'
+
+@description('SaS token if needed for script location.')
+@secure()
+param _ArtifactsLocationSasToken string = ''
+
+@description('Telemetry Opt-Out') // Change this to true to opt out of Microsoft Telemetry
+param optoutTelemetry bool = false
+
+@description('Determine if you would like to set all deployed alerts to auto-resolve.')
+param AutoResolveAlert bool = true
+
+@description('The Distribution Group that will receive email alerts for AVD.')
+param DistributionGroup string
 
 @minValue(1)
 @maxValue(100)
@@ -1047,6 +1067,34 @@ module monitoringDiagnosticSettings './modules/avdInsightsMonitoring/deploy.bice
     baselineNetworkResourceGroup
     baselineResourceGroups
     baselineStorageResourceGroup
+  ]
+}
+//Aleerting module for avd AMBA alerts
+module alerting './modules/avdAlerts/deploy.bicep' = if (deployAlerts) {
+  name: 'Alerting-${time}'
+  params: {
+    artifactsLocation: _ArtifactsLocation
+    artifactsLocationSasToken: _ArtifactsLocationSasToken
+    optoutTelemetry: optoutTelemetry
+    autoResolveAlert: AutoResolveAlert
+    distributionGroup: DistributionGroup
+    alertNamePrefix: deploymentPrefix
+    deploymentEnvironment: deploymentEnvironment
+    hostPoolName: varHostPoolName 
+    computeObjectsRgName: varComputeObjectsRgName
+    deployAlaWorkspace: deployAlaWorkspace
+    location: avdManagementPlaneLocation 
+    monitoringRgName: varMonitoringRgName
+    subscriptionId: avdWorkloadSubsId
+    tags: createResourceTags ? union(varCustomResourceTags, varAvdDefaultTags) : varAvdDefaultTags
+    avdAlaWorkspaceId: monitoringDiagnosticSettings.outputs.avdAlaWorkspaceResourceId
+    hostPoolResourceID: split(managementPLane.outputs.hostPoolResourceId, ',') 
+    
+  }
+  dependsOn: [
+    monitoringDiagnosticSettings
+    managementPLane
+    sessionHosts
   ]
 }
 
