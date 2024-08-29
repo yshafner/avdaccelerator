@@ -27,10 +27,10 @@ param deploymentEnvironment string = 'Dev'
 param diskEncryptionKeyExpirationInDays int = 60
 
 @sys.description('Required. Location where to deploy compute services.')
-param avdSessionHostLocation string 
+param avdSessionHostLocation string
 
 @sys.description('Required. Location where to deploy AVD management plane.')
-param avdManagementPlaneLocation string 
+param avdManagementPlaneLocation string
 
 @sys.description('AVD workload subscription ID, multiple subscriptions scenario. (Default: "")')
 param avdWorkloadSubsId string = ''
@@ -195,7 +195,7 @@ param alaExistingWorkspaceResourceId string = ''
 //alerting params
 
 @description('bool to decide if alerts should be deplyed')
-param deployAlerts bool 
+param deployAlerts bool
 
 @description('Location of needed scripts to deploy solution.')
 param _ArtifactsLocation string = 'https://raw.githubusercontent.com/Azure/azure-monitor-baseline-alerts/main/patterns/avd/scripts/'
@@ -505,9 +505,7 @@ param enableKvPurgeProtection bool = true
 var varDeploymentPrefixLowercase = toLower(deploymentPrefix)
 var varAzureCloudName = environment().name
 var varDeploymentEnvironmentLowercase = toLower(deploymentEnvironment)
-var varDeploymentEnvironmentComputeStorage = (deploymentEnvironment == 'Dev')
-  ? 'd'
-  : ((deploymentEnvironment == 'Test') ? 't' : ((deploymentEnvironment == 'Prod') ? 'p' : ''))
+var varDeploymentEnvironmentFirstCar = first(toLower(deploymentEnvironment))
 var varNamingUniqueStringThreeChar = take('${uniqueString(avdWorkloadSubsId, varDeploymentPrefixLowercase, time)}', 3)
 var varNamingUniqueStringTwoChar = take('${uniqueString(avdWorkloadSubsId, varDeploymentPrefixLowercase, time)}', 2)
 var varSessionHostLocationAcronym = varLocations[varSessionHostLocationLowercase].acronym
@@ -600,7 +598,7 @@ var varWrklKeyVaultSku = (varAzureCloudName == 'AzureCloud' || varAzureCloudName
   : (varAzureCloudName == 'AzureChinaCloud' ? 'standard' : null)
 var varSessionHostNamePrefix = avdUseCustomNaming
   ? avdSessionHostCustomNamePrefix
-  : 'vm${varDeploymentPrefixLowercase}${varDeploymentEnvironmentComputeStorage}${varSessionHostLocationAcronym}'
+  : 'vm${varDeploymentPrefixLowercase}${varDeploymentEnvironmentFirstCar}${varSessionHostLocationAcronym}'
 var varVmssFlexNamePrefix = avdUseCustomNaming
   ? '${vmssFlexCustomNamePrefix}-${varComputeStorageResourcesNamingStandard}'
   : 'vmss-${varComputeStorageResourcesNamingStandard}'
@@ -612,16 +610,16 @@ var varMsixFileShareName = avdUseCustomNaming
   ? msixFileShareCustomName
   : 'msix-pc-${varDeploymentPrefixLowercase}-${varDeploymentEnvironmentLowercase}-${varSessionHostLocationAcronym}-001'
 var varFslogixStorageName = avdUseCustomNaming
-  ? '${storageAccountPrefixCustomName}fsl${varDeploymentPrefixLowercase}${varDeploymentEnvironmentComputeStorage}${varNamingUniqueStringThreeChar}'
-  : 'stfsl${varDeploymentPrefixLowercase}${varDeploymentEnvironmentComputeStorage}${varNamingUniqueStringThreeChar}'
+  ? '${storageAccountPrefixCustomName}fsl${varDeploymentPrefixLowercase}${varDeploymentEnvironmentFirstCar}${varNamingUniqueStringThreeChar}'
+  : 'stfsl${varDeploymentPrefixLowercase}${varDeploymentEnvironmentFirstCar}${varNamingUniqueStringThreeChar}'
 var varFslogixStorageFqdn = createAvdFslogixDeployment
   ? '${varFslogixStorageName}.file.${environment().suffixes.storage}'
   : ''
 var varMsixStorageFqdn = '${varMsixStorageName}.file.${environment().suffixes.storage}'
 var varMsixStorageName = avdUseCustomNaming
-  ? '${storageAccountPrefixCustomName}msx${varDeploymentPrefixLowercase}${varDeploymentEnvironmentComputeStorage}${varNamingUniqueStringThreeChar}'
-  : 'stmsx${varDeploymentPrefixLowercase}${varDeploymentEnvironmentComputeStorage}${varNamingUniqueStringThreeChar}'
-var varManagementVmName = 'vmmgmt${varDeploymentPrefixLowercase}${varDeploymentEnvironmentComputeStorage}${varSessionHostLocationAcronym}'
+  ? '${storageAccountPrefixCustomName}msx${varDeploymentPrefixLowercase}${varDeploymentEnvironmentFirstCar}${varNamingUniqueStringThreeChar}'
+  : 'stmsx${varDeploymentPrefixLowercase}${varDeploymentEnvironmentFirstCar}${varNamingUniqueStringThreeChar}'
+var varManagementVmName = 'vmmgmt${varDeploymentPrefixLowercase}${varDeploymentEnvironmentFirstCar}${varSessionHostLocationAcronym}'
 var varAlaWorkspaceName = avdUseCustomNaming
   ? avdAlaWorkspaceCustomName
   : 'log-avd-${varDeploymentEnvironmentLowercase}-${varManagementPlaneLocationAcronym}'
@@ -1070,7 +1068,7 @@ module monitoringDiagnosticSettings './modules/avdInsightsMonitoring/deploy.bice
   ]
 }
 //Aleerting module for avd AMBA alerts
-module alerting './modules/avdAlerts/deploy.bicep' = if (deployAlerts) {
+module alerting './modules/avdAlerts/deploy.bicep' = if (deployAlerts && avdDeployMonitoring) {
   name: 'Alerting-${time}'
   params: {
     artifactsLocation: _ArtifactsLocation
@@ -1079,21 +1077,18 @@ module alerting './modules/avdAlerts/deploy.bicep' = if (deployAlerts) {
     autoResolveAlert: AutoResolveAlert
     distributionGroup: DistributionGroup
     alertNamePrefix: deploymentPrefix
-    deploymentEnvironment: deploymentEnvironment
-    hostPoolName: varHostPoolName 
+    deploymentEnvironment: varDeploymentEnvironmentFirstCar
+    hostPoolName: varHostPoolName
     computeObjectsRgName: varComputeObjectsRgName
     deployAlaWorkspace: deployAlaWorkspace
-    location: avdManagementPlaneLocation 
+    location: avdManagementPlaneLocation
     monitoringRgName: varMonitoringRgName
     subscriptionId: avdWorkloadSubsId
     tags: createResourceTags ? union(varCustomResourceTags, varAvdDefaultTags) : varAvdDefaultTags
     avdAlaWorkspaceId: monitoringDiagnosticSettings.outputs.avdAlaWorkspaceResourceId
-    hostPoolResourceID: split(managementPLane.outputs.hostPoolResourceId, ',') 
-    
+    hostPoolResourceID: split(managementPLane.outputs.hostPoolResourceId, ',')
   }
   dependsOn: [
-    monitoringDiagnosticSettings
-    managementPLane
     sessionHosts
   ]
 }
@@ -1163,7 +1158,9 @@ module managementPLane './modules/avdManagementPlane/deploy.bicep' = {
     preferredAppGroupType: (hostPoolPreferredAppGroupType == 'RemoteApp') ? 'RailApplications' : 'Desktop'
     deployScalingPlan: varDeployScalingPlan
     scalingPlanExclusionTag: varScalingPlanExclusionTag
-    scalingPlanSchedules: (avdHostPoolType == 'Pooled') ? varPooledScalingPlanSchedules : varPersonalScalingPlanSchedules
+    scalingPlanSchedules: (avdHostPoolType == 'Pooled')
+      ? varPooledScalingPlanSchedules
+      : varPersonalScalingPlanSchedules
     scalingPlanName: varScalingPlanName
     hostPoolMaxSessions: hostPoolMaxSessions
     personalAssignType: avdPersonalAssignType
@@ -1487,7 +1484,7 @@ module msixAzureFilesStorage './modules/storageAzureFiles/deploy.bicep' = if (va
 }
 
 // VMSS Flex
-module vmScaleSetFlex './modules/avdSessionHosts/.bicep/vmScaleSet.bicep' =  if (avdDeploySessionHosts) {
+module vmScaleSetFlex './modules/avdSessionHosts/.bicep/vmScaleSet.bicep' = if (avdDeploySessionHosts) {
   name: 'AVD-VMSS-Flex-${time}'
   scope: resourceGroup('${avdWorkloadSubsId}', '${varComputeObjectsRgName}')
   params: {

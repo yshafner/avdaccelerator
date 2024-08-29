@@ -48,7 +48,7 @@ param autoResolveAlert bool = true
 @description('The Distribution Group that will receive email alerts for AVD.')
 param distributionGroup string
 
-@description('dev - test -prod')
+@description('First car of deployment type')
 param deploymentEnvironment string
 
 @description('name of host pool')
@@ -95,7 +95,7 @@ module alerting '../avdAlerts/avd/templates/deploy.bicep' = if (deployAlerts) {
     ResourceGroupStatus: 'Existing'
     AllResourcesSameRG: false
     AutoResolveAlert: autoResolveAlert
-    Environment: first(toLower(deploymentEnvironment))
+    Environment: deploymentEnvironment
     Location: location
     AVDResourceGroupId: computeObjectsRgName
     HostPools: hostPoolResourceID 
