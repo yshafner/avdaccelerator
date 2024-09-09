@@ -26,9 +26,6 @@ param monitoringRgName string
 @sys.description('AVD Resource Group Name for compute resources.')
 param computeObjectsRgName string
 
-@description('bool to decide if alerts should be deplyed')
-param deployAlerts bool = false
-
 @description('Location of needed scripts to deploy solution.')
 param artifactsLocation string = 'https://raw.githubusercontent.com/Azure/azure-monitor-baseline-alerts/main/patterns/avd/scripts/'
 
@@ -82,7 +79,7 @@ var hostPoolInfo = [
 
 
 // Calling AMBA for AVD alerts
-module alerting '../avdAlerts/avd/templates/deploy.bicep' = if (deployAlerts) { 
+module alerting '../avdAlerts/avd/templates/deploy.bicep' = { 
   name: 'Alerting-${time}'
   params: {
     _ArtifactsLocation: artifactsLocation
