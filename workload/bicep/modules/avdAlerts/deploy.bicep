@@ -94,7 +94,7 @@ module alerting '../avdAlerts/avd/templates/deploy.bicep' = {
     AutoResolveAlert: autoResolveAlert
     Environment: deploymentEnvironment
     Location: location
-    AVDResourceGroupId: computeObjectsRgName
+    AVDResourceGroupId: rgResourceId
     HostPools: hostPoolResourceID 
     HostPoolInfo: hostPoolInfo
     Tags: tags
