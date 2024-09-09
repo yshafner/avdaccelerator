@@ -4251,7 +4251,7 @@
                   "label": "[parameters('hostPoolName')]",
                   "value": "[parameters('hostPoolResourceID')]"
                 },
-                "colVMresGroup": {
+                "colVMResGroup": {
                   "label": "[parameters('computeObjectsRgName')]",
                   "value": "[variables('rgResourceId')]"
                 }

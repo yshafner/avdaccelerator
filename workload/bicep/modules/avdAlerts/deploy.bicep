@@ -70,7 +70,7 @@ var hostPoolInfo = [
           label: hostPoolName
           value: hostPoolResourceID
       }
-      colVMresGroup: {
+      colVMResGroup: {
           label: computeObjectsRgName
           value: rgResourceId
       }
