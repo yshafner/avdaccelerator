@@ -66,14 +66,8 @@ param time string = utcNow()
 var rgResourceId = resourceId('Microsoft.Resources/resourceGroups', computeObjectsRgName)
 var hostPoolInfo = [
   {
-      colHostPoolName: {
-          label: hostPoolName
-          value: hostPoolResourceID
-      }
-      colVMResGroup: {
-          label: computeObjectsRgName
-          value: rgResourceId
-      }
+      colHostPoolName: hostPoolName
+      colVMResGroup: rgResourceId
   }
 ]
 

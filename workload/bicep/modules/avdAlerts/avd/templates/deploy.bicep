@@ -2227,14 +2227,14 @@ module automationAccount 'carml/1.3.0/Microsoft.Automation/automationAccounts/de
 
 module roleAssignment_AutoAcctDesktopRead 'carml/1.3.0/Microsoft.Authorization/roleAssignments/resourceGroup/deploy.bicep' = [
   for RG in HostPoolInfo: if (!AllResourcesSameRG) {
-    scope: resourceGroup(split(RG.colVMResGroup.value,'/')[4])
-    name: 'c_DsktpRead_${split(RG.colVMResGroup.value, '/')[4]}'
+    scope: resourceGroup(split(RG.colVMResGroup, '/')[4])
+    name: 'c_DsktpRead_${split(RG.colVMResGroup, '/')[4]}'
     params: {
       enableDefaultTelemetry: false
       principalId: automationAccount.outputs.systemAssignedPrincipalId
       roleDefinitionIdOrName: 'Desktop Virtualization Reader'
       principalType: 'ServicePrincipal'
-      resourceGroupName: split(RG.colVMResGroup.value, '/')[4]
+      resourceGroupName: split(RG.colVMResGroup, '/')[4]
     }
     dependsOn: [
       automationAccount
