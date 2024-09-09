@@ -5,7 +5,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.29.47.4906",
-      "templateHash": "16839847285605934282"
+      "templateHash": "15660072300682351819"
     },
     "name": "AVD Accelerator - Baseline Deployment",
     "description": "AVD Accelerator - Deployment Baseline",
@@ -4120,7 +4120,7 @@
             "_generator": {
               "name": "bicep",
               "version": "0.29.47.4906",
-              "templateHash": "17602071891927070548"
+              "templateHash": "12187596424543920270"
             },
             "name": "AVD AMBA alerts",
             "description": "This module deploys avd amba alerts",
@@ -4326,7 +4326,7 @@
                     "_generator": {
                       "name": "bicep",
                       "version": "0.29.47.4906",
-                      "templateHash": "7551830259169948351"
+                      "templateHash": "257911098062881808"
                     }
                   },
                   "parameters": {
@@ -9441,8 +9441,8 @@
                       "condition": "[not(parameters('AllResourcesSameRG'))]",
                       "type": "Microsoft.Resources/deployments",
                       "apiVersion": "2022-09-01",
-                      "name": "[format('c_DsktpRead_{0}', split(parameters('HostPoolInfo')[copyIndex()].colVMResGroup, '/')[4])]",
-                      "resourceGroup": "[split(parameters('HostPoolInfo')[copyIndex()].colVMResGroup, '/')[4]]",
+                      "name": "[format('c_DsktpRead_{0}', split(parameters('HostPoolInfo')[copyIndex()].colVMResGroup.value, '/')[4])]",
+                      "resourceGroup": "[split(parameters('HostPoolInfo')[copyIndex()].colVMResGroup.value, '/')[4]]",
                       "properties": {
                         "expressionEvaluationOptions": {
                           "scope": "inner"
@@ -9462,7 +9462,7 @@
                             "value": "ServicePrincipal"
                           },
                           "resourceGroupName": {
-                            "value": "[split(parameters('HostPoolInfo')[copyIndex()].colVMResGroup, '/')[4]]"
+                            "value": "[split(parameters('HostPoolInfo')[copyIndex()].colVMResGroup.value, '/')[4]]"
                           }
                         },
                         "template": {
