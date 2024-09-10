@@ -55,7 +55,7 @@ param hostPoolName string
 param avdAlaWorkspaceId string
 
 @description('resource ID of the host pool')
-param hostPoolResourceID array
+param hostPoolResourceID string
 
 @sys.description('Tags to be applied to resources')
 param tags object
@@ -65,6 +65,7 @@ param time string = utcNow()
 
 var rgResourceId = resourceId('Microsoft.Resources/resourceGroups', computeObjectsRgName)
 
+@description('Array that has the host pool and resource group IDs')
 var hostPoolInfo = [
   {
       colHostPoolName: hostPoolResourceID
@@ -91,7 +92,7 @@ module alerting '../avdAlerts/avd/templates/deploy.bicep' = {
     Environment: deploymentEnvironment
     Location: location
     AVDResourceGroupId: rgResourceId
-    HostPools: hostPoolResourceID 
+    HostPools: hostPoolInfo
     HostPoolInfo: hostPoolInfo
     Tags: tags
 

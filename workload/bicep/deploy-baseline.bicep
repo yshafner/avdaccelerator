@@ -1086,7 +1086,7 @@ module alerting './modules/avdAlerts/deploy.bicep' = if (deployAlerts && avdDepl
     subscriptionId: avdWorkloadSubsId
     tags: createResourceTags ? union(varCustomResourceTags, varAvdDefaultTags) : varAvdDefaultTags
     avdAlaWorkspaceId: monitoringDiagnosticSettings.outputs.avdAlaWorkspaceResourceId
-    hostPoolResourceID: split(managementPLane.outputs.hostPoolResourceId, ',')
+    hostPoolResourceID: managementPLane.outputs.hostPoolResourceId
   }
   dependsOn: [
     sessionHosts

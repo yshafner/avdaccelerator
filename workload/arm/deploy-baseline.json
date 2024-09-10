@@ -5,7 +5,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.29.47.4906",
-      "templateHash": "6778014820237762796"
+      "templateHash": "668455091742556418"
     },
     "name": "AVD Accelerator - Baseline Deployment",
     "description": "AVD Accelerator - Deployment Baseline",
@@ -4110,7 +4110,7 @@
             "value": "[reference(subscriptionResourceId('Microsoft.Resources/deployments', format('Monitoring-{0}', parameters('time'))), '2022-09-01').outputs.avdAlaWorkspaceResourceId.value]"
           },
           "hostPoolResourceID": {
-            "value": "[split(reference(subscriptionResourceId('Microsoft.Resources/deployments', format('AVD-MGMT-Plane-{0}', parameters('time'))), '2022-09-01').outputs.hostPoolResourceId.value, ',')]"
+            "value": "[reference(subscriptionResourceId('Microsoft.Resources/deployments', format('AVD-MGMT-Plane-{0}', parameters('time'))), '2022-09-01').outputs.hostPoolResourceId.value]"
           }
         },
         "template": {
@@ -4120,7 +4120,7 @@
             "_generator": {
               "name": "bicep",
               "version": "0.29.47.4906",
-              "templateHash": "16955335047604945579"
+              "templateHash": "13360756392176626647"
             },
             "name": "AVD AMBA alerts",
             "description": "This module deploys avd amba alerts",
@@ -4224,7 +4224,7 @@
               }
             },
             "hostPoolResourceID": {
-              "type": "array",
+              "type": "string",
               "metadata": {
                 "description": "resource ID of the host pool"
               }
@@ -4304,7 +4304,7 @@
                     "value": "[variables('rgResourceId')]"
                   },
                   "HostPools": {
-                    "value": "[parameters('hostPoolResourceID')]"
+                    "value": "[variables('hostPoolInfo')]"
                   },
                   "HostPoolInfo": {
                     "value": "[variables('hostPoolInfo')]"
