@@ -74,6 +74,8 @@ var hostPoolInfo = [
   }
 ]
 
+var HostPoolResourceIDArray = [hostPoolResourceID]
+
 
 // Calling AMBA for AVD alerts
 module alerting '../avdAlerts/avd/templates/deploy.bicep' = { 
@@ -92,7 +94,7 @@ module alerting '../avdAlerts/avd/templates/deploy.bicep' = {
     Environment: deploymentEnvironment
     Location: location
     AVDResourceGroupId: rgResourceId
-    HostPools: hostPoolInfo
+    HostPools: HostPoolResourceIDArray
     HostPoolInfo: hostPoolInfo
     Tags: tags
 

@@ -5,7 +5,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.29.47.4906",
-      "templateHash": "668455091742556418"
+      "templateHash": "11852574103688461351"
     },
     "name": "AVD Accelerator - Baseline Deployment",
     "description": "AVD Accelerator - Deployment Baseline",
@@ -4120,7 +4120,7 @@
             "_generator": {
               "name": "bicep",
               "version": "0.29.47.4906",
-              "templateHash": "13360756392176626647"
+              "templateHash": "10926404916416761995"
             },
             "name": "AVD AMBA alerts",
             "description": "This module deploys avd amba alerts",
@@ -4250,6 +4250,9 @@
                 "colHostPoolName": "[parameters('hostPoolResourceID')]",
                 "colVMResGroup": "[skip(variables('rgResourceId'), 15)]"
               }
+            ],
+            "HostPoolResourceIDArray": [
+              "[parameters('hostPoolResourceID')]"
             ]
           },
           "resources": [
@@ -4304,7 +4307,7 @@
                     "value": "[variables('rgResourceId')]"
                   },
                   "HostPools": {
-                    "value": "[variables('hostPoolInfo')]"
+                    "value": "[variables('HostPoolResourceIDArray')]"
                   },
                   "HostPoolInfo": {
                     "value": "[variables('hostPoolInfo')]"
@@ -4320,7 +4323,7 @@
                     "_generator": {
                       "name": "bicep",
                       "version": "0.29.47.4906",
-                      "templateHash": "7551830259169948351"
+                      "templateHash": "10005697365811031487"
                     }
                   },
                   "parameters": {
@@ -4354,7 +4357,7 @@
                     },
                     "AllResourcesSameRG": {
                       "type": "bool",
-                      "defaultValue": true,
+                      "defaultValue": false,
                       "metadata": {
                         "description": "Flag to determine if AVD VMs and AVD resources are all in the same Resource Group."
                       }

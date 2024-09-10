@@ -19,7 +19,7 @@ param optoutTelemetry bool = false
 param AlertNamePrefix string = 'AVD'
 
 @description('Flag to determine if AVD VMs and AVD resources are all in the same Resource Group.')
-param AllResourcesSameRG bool = true
+param AllResourcesSameRG bool = false
 
 @description('Determine if you would like to set all deployed alerts to auto-resolve.')
 param AutoResolveAlert bool = true
