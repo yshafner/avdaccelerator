@@ -64,10 +64,12 @@ param tags object
 param time string = utcNow()
 
 var rgResourceId = resourceId('Microsoft.Resources/resourceGroups', computeObjectsRgName)
+
 var hostPoolInfo = [
   {
       colHostPoolName: hostPoolName
-      colVMResGroup: computeObjectsRgName
+      colVMResGroup: rgResourceId
+      
   }
 ]
 

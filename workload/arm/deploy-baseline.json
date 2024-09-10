@@ -5,7 +5,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.29.47.4906",
-      "templateHash": "5632985511530631341"
+      "templateHash": "18094959681452340349"
     },
     "name": "AVD Accelerator - Baseline Deployment",
     "description": "AVD Accelerator - Deployment Baseline",
@@ -4120,7 +4120,7 @@
             "_generator": {
               "name": "bicep",
               "version": "0.29.47.4906",
-              "templateHash": "1569180158166801817"
+              "templateHash": "466572023556647163"
             },
             "name": "AVD AMBA alerts",
             "description": "This module deploys avd amba alerts",
@@ -4248,7 +4248,7 @@
             "hostPoolInfo": [
               {
                 "colHostPoolName": "[parameters('hostPoolName')]",
-                "colVMResGroup": "[parameters('computeObjectsRgName')]"
+                "colVMResGroup": "[variables('rgResourceId')]"
               }
             ]
           },
