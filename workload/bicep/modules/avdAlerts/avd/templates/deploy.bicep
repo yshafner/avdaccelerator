@@ -2242,6 +2242,7 @@ module roleAssignment_AutoAcctDesktopRead 'carml/1.3.0/Microsoft.Authorization/r
   }
 ]
 
+
 module roleAssignment_AutoAcctDesktopReadSameRG 'carml/1.3.0/Microsoft.Authorization/roleAssignments/resourceGroup/deploy.bicep' =
   if (AllResourcesSameRG) {
     scope: resourceGroup(split(AVDResourceGroupId, '/')[4])

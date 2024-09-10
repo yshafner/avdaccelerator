@@ -1067,7 +1067,7 @@ module monitoringDiagnosticSettings './modules/avdInsightsMonitoring/deploy.bice
     baselineStorageResourceGroup
   ]
 }
-//Alerting module for avd AMBA alerts
+//Aleerting module for avd AMBA alerts
 module alerting './modules/avdAlerts/deploy.bicep' = if (deployAlerts && avdDeployMonitoring) {
   name: 'Alerting-${time}'
   params: {
