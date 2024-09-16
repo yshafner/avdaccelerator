@@ -69,7 +69,7 @@ var rgResourceId = resourceId('Microsoft.Resources/resourceGroups', computeObjec
 var hostPoolInfo = [
   {
       colHostPoolName: hostPoolResourceID
-      colVMResGroup: skip(rgResourceId, 15)
+      colVMResGroup: rgResourceId
       
   }
 ]
