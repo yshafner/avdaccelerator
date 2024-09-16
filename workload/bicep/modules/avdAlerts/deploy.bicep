@@ -78,7 +78,7 @@ var HostPoolResourceIDArray = [hostPoolResourceID]
 
 
 // Calling AMBA for AVD alerts
-module alerting '../avdAlerts/avd/templates/deploy.bicep' = { 
+module alerting '../../../../azure-monitor-baseline-alerts/patterns/avd/templates/deploy.bicep' = { 
   name: 'Alerting-${time}'
   params: {
     _ArtifactsLocation: artifactsLocation

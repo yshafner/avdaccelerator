@@ -5,7 +5,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.29.47.4906",
-      "templateHash": "11852574103688461351"
+      "templateHash": "804737892202713969"
     },
     "name": "AVD Accelerator - Baseline Deployment",
     "description": "AVD Accelerator - Deployment Baseline",
@@ -4120,7 +4120,7 @@
             "_generator": {
               "name": "bicep",
               "version": "0.29.47.4906",
-              "templateHash": "10926404916416761995"
+              "templateHash": "6839181165196818275"
             },
             "name": "AVD AMBA alerts",
             "description": "This module deploys avd amba alerts",
@@ -4323,7 +4323,7 @@
                     "_generator": {
                       "name": "bicep",
                       "version": "0.29.47.4906",
-                      "templateHash": "10005697365811031487"
+                      "templateHash": "7551830259169948351"
                     }
                   },
                   "parameters": {
@@ -4357,7 +4357,7 @@
                     },
                     "AllResourcesSameRG": {
                       "type": "bool",
-                      "defaultValue": false,
+                      "defaultValue": true,
                       "metadata": {
                         "description": "Flag to determine if AVD VMs and AVD resources are all in the same Resource Group."
                       }
