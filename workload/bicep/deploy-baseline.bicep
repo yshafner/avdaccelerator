@@ -198,7 +198,7 @@ param alaExistingWorkspaceResourceId string = ''
 param deployAlerts bool
 
 @description('Location of needed scripts to deploy solution.')
-param _ArtifactsLocation string = 'https://raw.githubusercontent.com/Azure/azure-monitor-baseline-alerts/main/patterns/avd/scripts/'
+param _ArtifactsLocation string = 'https://raw.githubusercontent.com/yshafner/azure-monitor-baseline-alerts/main/patterns/avd/scripts/'
 
 @description('SaS token if needed for script location.')
 @secure()
