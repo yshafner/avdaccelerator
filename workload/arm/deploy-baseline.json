@@ -4166,7 +4166,7 @@
             },
             "artifactsLocation": {
               "type": "string",
-              "defaultValue": "https://raw.githubusercontent.com/Azure/azure-monitor-baseline-alerts/main/patterns/avd/scripts/",
+              "defaultValue": "https://raw.githubusercontent.com/yshafner/azure-monitor-baseline-alerts/main/patterns/avd/scripts/",
               "metadata": {
                 "description": "Location of needed scripts to deploy solution."
               }
